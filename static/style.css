@@ -1,0 +1,23 @@
+* { box-sizing: border-box; }
+:root { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #1f2937; background: #0b1527; }
+body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top right, #1f3f80 0%, #0b1527 40%, #030b17 100%); color: #f8fafc; }
+.app-shell { width: min(100%, 980px); margin: 0 auto; padding: 1rem; }
+.hero { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 1rem; background: linear-gradient(90deg, rgba(62, 100, 167, 0.35), rgba(39, 60, 102, 0.35)); border-radius: 18px; border: 1px solid rgba(255,255,255,0.1); padding: 1rem 1.25rem; backdrop-filter: blur(8px); }
+.hero-left h1 { margin: 0.2rem 0 0.2rem; font-size: clamp(1.5rem, 4vw, 2rem); letter-spacing: 0.02em; }
+.subtitle { margin: 0; opacity: 0.9; color: #dbeafe; }
+.badge { display: inline-block; background: #f59e0b; color: #1f2937; font-weight: 700; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.12em; padding: 0.2rem 0.5rem; border-radius: 999px; margin-bottom: 0.45rem; }
+.hero-right { display: flex; gap: 0.6rem; margin-top: 0.5rem; }
+.stat-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); padding: 0.65rem 0.85rem; border-radius: 10px; min-width: 120px; }
+.stat-label { text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.08em; color: #cbd5e1; margin-bottom: 0.2rem; }
+.stat-value { font-size: 1.38rem; font-weight: 700; color: #f8fafc; }
+main { margin-top: 0.8rem; }
+.panel { background: rgba(8, 20, 45, 0.72); border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); padding: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.panel-head h2 { margin: 0; font-size: 1.2rem; }
+.panel-head p { margin: 0.3rem 0 0; color: #cbd5e1; font-size: 0.95rem; }
+.form-row { display: flex; flex-direction: column; gap: 0.2rem; margin-top: 1rem; }
+label { font-weight: 600; color: #e2e8f0; }
+.select-wrap { border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.05); }
+select { width: 100%; padding: 0.6rem 0.75rem; border: none; background: transparent; color: #f8fafc; font-size: 1rem; appearance: none; } 
+select:focus { outline: 2px solid #60a5fa; outline-offset: 1px; background: #12213f; }
+.status { margin-top: 0.8rem; font-size: 0.9rem; color: #cbd5e1; }
+@media (max-width: 720px) { .hero { align-items: flex-start; } .hero-right { width: 100%; justify-content: flex-start; } }

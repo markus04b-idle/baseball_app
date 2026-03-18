@@ -2,7 +2,7 @@ from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 
-class Person(SQLModel, table=True):
+class People(SQLModel, table=True):
     playerID: str = Field(primary_key=True, index=True)
     ID: Optional[int] = Field(default=None)
     birthYear: Optional[int] = Field(default=None)
@@ -29,10 +29,10 @@ class Person(SQLModel, table=True):
     finalGame: Optional[str] = Field(default=None)
     retroID: Optional[str] = Field(default=None)
 
-    batting_stats: List["Batting"] = Relationship(back_populates="player")
+    # batting_stats relationship omitted to avoid ambiguous join mapping for this exercise
 
 
-class Team(SQLModel, table=True):
+class Teams(SQLModel, table=True):
     teamID: str = Field(primary_key=True)
     yearID: int = Field(primary_key=True)
     lgID: Optional[str] = Field(default=None)
@@ -82,14 +82,14 @@ class Team(SQLModel, table=True):
     teamIDlahman45: Optional[str] = Field(default=None)
     teamIDretro: Optional[str] = Field(default=None)
 
-    batting_stats: List["Batting"] = Relationship(back_populates="team")
+    # batting_stats relationship omitted to avoid ambiguous join mapping for this exercise
 
 
 class Batting(SQLModel, table=True):
-    playerID: str = Field(foreign_key="person.playerID", primary_key=True)
-    yearID: int = Field(foreign_key="team.yearID", primary_key=True)
+    playerID: str = Field(foreign_key="people.playerID", primary_key=True)
+    yearID: int = Field(foreign_key="teams.yearID", primary_key=True)
     stint: int = Field(primary_key=True)
-    teamID: str = Field(foreign_key="team.teamID")
+    teamID: str = Field(foreign_key="teams.teamID")
     lgID: Optional[str] = Field(default=None)
     G: Optional[int] = Field(default=None)
     AB: Optional[int] = Field(default=None)
@@ -109,8 +109,7 @@ class Batting(SQLModel, table=True):
     SF: Optional[int] = Field(default=None)
     GIDP: Optional[int] = Field(default=None)
 
-    player: Optional[Person] = Relationship(back_populates="batting_stats")
-    team: Optional[Team] = Relationship(back_populates="batting_stats")
+    # relationships omitted to keep model mapping simple for this endpoint
 
 
 from sqlmodel import create_engine

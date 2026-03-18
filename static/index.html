@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baseball App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-left">
+        <div class="badge">MLB</div>
+        <h1>Baseball History Dashboard</h1>
+        <p class="subtitle">Select a season to explore team data and player stats.</p>
+      </div>
+      <div class="hero-right">
+        <div class="stat-card">
+          <div class="stat-label">Years</div>
+          <div class="stat-value" id="years-count">--</div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h2>Choose a season</h2>
+            <p>Data is loaded from the backend `/years` endpoint.</p>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="form-row">
+            <label for="year-select">Season Year</label>
+            <div class="select-wrap">
+              <select id="year-select" aria-label="Season year">
+                <option>Loading years...</option>
+              </select>
+            </div>
+          </div>
+          <p id="load-status" class="status">Using the latest baseball years dataset.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
