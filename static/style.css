@@ -20,4 +20,15 @@ label { font-weight: 600; color: #e2e8f0; }
 select { width: 100%; padding: 0.6rem 0.75rem; border: none; background: transparent; color: #f8fafc; font-size: 1rem; appearance: none; } 
 select:focus { outline: 2px solid #60a5fa; outline-offset: 1px; background: #12213f; }
 .status { margin-top: 0.8rem; font-size: 0.9rem; color: #cbd5e1; }
+.team-results { margin-top: 1rem; padding: 0.8rem; border-radius: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); }
+.team-results h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+.team-results ul { margin: 0; padding-left: 1rem; color: #f8fafc; }
+.team-results li { margin-bottom: 0.2rem; }
+.team-button { background: none; border: none; color: #93c5fd; cursor: pointer; text-decoration: underline; padding: 0; font: inherit; }
+.team-button:hover { color: #bfdbfe; }
+.league-block { margin-top: 0.5rem; }
+.league-block > strong { display: block; margin-bottom: 0.2rem; color: #f8fafc; }
+.division-list { margin: 0.2rem 0 0.5rem 0.8rem; padding-left: 0.3rem; border-left: 1px solid rgba(255,255,255,0.2); }
+.division-list li { margin-bottom: 0.35rem; }
+.division-list em { display: block; color: #cbd5e1; margin-bottom: 0.1rem; }
 @media (max-width: 720px) { .hero { align-items: flex-start; } .hero-right { width: 100%; justify-content: flex-start; } }
