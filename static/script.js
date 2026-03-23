@@ -85,7 +85,7 @@ async function loadPlayersForTeam(year, teamID, teamName) {
   playersList.innerHTML = '<li>Loading players...</li>';
 
   try {
-    const res = await fetch(`/team-players?year=${year}&teamID=${encodeURIComponent(teamID)}`);
+    const res = await fetch(`/team-players-by-name?year=${year}&team_name=${encodeURIComponent(teamName)}`);
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
     const players = await res.json();
     if (!Array.isArray(players) || players.length === 0) {
@@ -93,7 +93,31 @@ async function loadPlayersForTeam(year, teamID, teamName) {
       return;
     }
 
-    playersList.innerHTML = players.map((p) => `<li>${p.first} ${p.last}</li>`).join('');
+    playersList.innerHTML = players.map((p) => `<li><button class="player-button" data-playerid="${p.playerID}" data-teamid="${teamID}">${p.first} ${p.last}</button></li>`).join('');
+
+    document.querySelectorAll('.player-button').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const playerDetails = document.getElementById('player-details');
+        const playerStatsPanel = document.getElementById('player-stats-panel');
+        try {
+          const res = await fetch(`/player-stats?playerID=${btn.dataset.playerid}&year=${year}&teamID=${encodeURIComponent(btn.dataset.teamid)}`);
+          if (!res.ok) throw new Error(`Server returned ${res.status}`);
+          const data = await res.json();
+          const stats = data.stats;
+          const other = data.other_teams;
+          let details = `<p><strong>${btn.textContent}</strong></p>`;
+          details += `<p>Games: ${stats.G}, At Bats: ${stats.AB}, Runs: ${stats.R}, Hits: ${stats.H}, Doubles: ${stats['2B']}, Triples: ${stats['3B']}, Home Runs: ${stats.HR}, RBIs: ${stats.RBI}, Stolen Bases: ${stats.SB}, Caught Stealing: ${stats.CS}</p>`;
+          if (other.length > 0) {
+            details += `<p>Played for: ${other.join(', ')}</p>`;
+          }
+          playerDetails.innerHTML = details;
+          playerStatsPanel.style.display = 'block';
+        } catch (error) {
+          console.error(error);
+          playerDetails.innerHTML = '<p>Could not load player stats.</p>';
+        }
+      });
+    });
   } catch (error) {
     console.error(error);
     playersList.innerHTML = '<li>Could not load players for this team.</li>';
