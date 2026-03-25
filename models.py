@@ -1,5 +1,6 @@
 from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel
+from sqlalchemy import Column, Integer
 
 
 class People(SQLModel, table=True):
@@ -50,8 +51,8 @@ class Teams(SQLModel, table=True):
     R: Optional[int] = Field(default=None)
     AB: Optional[int] = Field(default=None)
     H: Optional[int] = Field(default=None)
-    twoB: Optional[int] = Field(default=None, alias="2B")
-    threeB: Optional[int] = Field(default=None, alias="3B")
+    twoB: Optional[int] = Field(default=None, sa_column=Column("2B", Integer))
+    threeB: Optional[int] = Field(default=None, sa_column=Column("3B", Integer))
     HR: Optional[int] = Field(default=None)
     BB: Optional[int] = Field(default=None)
     SO: Optional[int] = Field(default=None)
@@ -95,8 +96,8 @@ class Batting(SQLModel, table=True):
     AB: Optional[int] = Field(default=None)
     R: Optional[int] = Field(default=None)
     H: Optional[int] = Field(default=None)
-    twoB: Optional[int] = Field(default=None, alias="2B")
-    threeB: Optional[int] = Field(default=None, alias="3B")
+    twoB: Optional[int] = Field(default=None, sa_column=Column("2B", Integer))
+    threeB: Optional[int] = Field(default=None, sa_column=Column("3B", Integer))
     HR: Optional[int] = Field(default=None)
     RBI: Optional[int] = Field(default=None)
     SB: Optional[int] = Field(default=None)

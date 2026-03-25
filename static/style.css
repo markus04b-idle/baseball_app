@@ -31,4 +31,25 @@ select:focus { outline: 2px solid #60a5fa; outline-offset: 1px; background: #122
 .division-list { margin: 0.2rem 0 0.5rem 0.8rem; padding-left: 0.3rem; border-left: 1px solid rgba(255,255,255,0.2); }
 .division-list li { margin-bottom: 0.35rem; }
 .division-list em { display: block; color: #cbd5e1; margin-bottom: 0.1rem; }
+.player-button { background: none; border: none; color: #93c5fd; cursor: pointer; text-decoration: underline; padding: 0; font: inherit; }
+.player-button:hover { color: #bfdbfe; }
+
+/* ---- player card overlay ---- */
+#player-card-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); }
+.player-card { position: relative; background: linear-gradient(135deg, #101d36 0%, #0e1a2f 100%); border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; padding: 1.5rem 1.75rem; width: min(92vw, 520px); max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); color: #f8fafc; }
+.card-close { position: absolute; top: 0.6rem; right: 0.75rem; background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; line-height: 1; }
+.card-close:hover { color: #f8fafc; }
+.card-header { margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.75rem; }
+.card-header h2 { margin: 0; font-size: 1.35rem; }
+.card-id { display: inline-block; margin-top: 0.25rem; font-size: 0.78rem; color: #94a3b8; background: rgba(255,255,255,0.06); padding: 0.15rem 0.5rem; border-radius: 6px; font-family: monospace; }
+.card-section { margin-bottom: 0.9rem; }
+.card-section h3 { margin: 0 0 0.4rem; font-size: 0.92rem; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.08em; }
+.card-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.card-table td, .card-table th { padding: 0.3rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.card-table tr td:first-child { color: #94a3b8; white-space: nowrap; width: 40%; }
+.stats-table th { color: #cbd5e1; font-size: 0.78rem; text-transform: uppercase; text-align: center; }
+.stats-table td { text-align: center; font-weight: 600; }
+.card-loading { text-align: center; color: #94a3b8; padding: 2rem 0; }
+.card-error { color: #f87171; font-size: 0.85rem; }
+
 @media (max-width: 720px) { .hero { align-items: flex-start; } .hero-right { width: 100%; justify-content: flex-start; } }
