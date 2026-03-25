@@ -85,7 +85,7 @@ async function loadPlayersForTeam(year, teamID, teamName) {
   playersList.innerHTML = '<li>Loading players...</li>';
 
   try {
-    const res = await fetch(`/team-players-by-name?year=${year}&team_name=${encodeURIComponent(teamName)}`);
+    const res = await fetch(`/team-players?year=${year}&teamID=${encodeURIComponent(teamID)}`);
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
     const players = await res.json();
     if (!Array.isArray(players) || players.length === 0) {
@@ -100,12 +100,27 @@ async function loadPlayersForTeam(year, teamID, teamName) {
         const playerDetails = document.getElementById('player-details');
         const playerStatsPanel = document.getElementById('player-stats-panel');
         try {
-          const res = await fetch(`/player-stats?playerID=${btn.dataset.playerid}&year=${year}&teamID=${encodeURIComponent(btn.dataset.teamid)}`);
-          if (!res.ok) throw new Error(`Server returned ${res.status}`);
-          const data = await res.json();
+          const [statsRes, detailsRes] = await Promise.all([
+            fetch(`/player-stats?playerID=${btn.dataset.playerid}&year=${year}&teamID=${encodeURIComponent(btn.dataset.teamid)}`),
+            fetch(`/player-details?playerID=${btn.dataset.playerid}`)
+          ]);
+          if (!statsRes.ok) throw new Error(`Server returned ${statsRes.status}`);
+          if (!detailsRes.ok) throw new Error(`Server returned ${detailsRes.status}`);
+          const data = await statsRes.json();
+          const detailsData = await detailsRes.json();
           const stats = data.stats;
           const other = data.other_teams;
+          const birth = detailsData.birth || {};
+          const birthDate = [birth.year, birth.month, birth.day].filter((v) => v !== null && v !== undefined).join('-') || 'Unknown';
+          const birthPlace = [birth.city, birth.state, birth.country].filter((v) => v).join(', ') || 'Unknown';
+
           let details = `<p><strong>${btn.textContent}</strong></p>`;
+          details += `<p>Player ID: ${detailsData.playerID || btn.dataset.playerid}</p>`;
+          details += `<p>Given Name: ${detailsData.given || 'Unknown'}</p>`;
+          details += `<p>Born: ${birthDate} (${birthPlace})</p>`;
+          details += `<p>Bats/Throws: ${detailsData.bats || 'Unknown'} / ${detailsData.throws || 'Unknown'}</p>`;
+          details += `<p>Height/Weight: ${detailsData.height || 'Unknown'} / ${detailsData.weight || 'Unknown'}</p>`;
+          details += `<p>Debut: ${detailsData.debut || 'Unknown'} | Final Game: ${detailsData.finalGame || 'Unknown'}</p>`;
           details += `<p>Games: ${stats.G}, At Bats: ${stats.AB}, Runs: ${stats.R}, Hits: ${stats.H}, Doubles: ${stats['2B']}, Triples: ${stats['3B']}, Home Runs: ${stats.HR}, RBIs: ${stats.RBI}, Stolen Bases: ${stats.SB}, Caught Stealing: ${stats.CS}</p>`;
           if (other.length > 0) {
             details += `<p>Played for: ${other.join(', ')}</p>`;
@@ -114,7 +129,7 @@ async function loadPlayersForTeam(year, teamID, teamName) {
           playerStatsPanel.style.display = 'block';
         } catch (error) {
           console.error(error);
-          playerDetails.innerHTML = '<p>Could not load player stats.</p>';
+          playerDetails.innerHTML = '<p>Could not load player details/stats for this player.</p>';
         }
       });
     });

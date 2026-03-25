@@ -34,10 +34,10 @@ async def get_teams(year: int):
 @app.get("/team-players")
 async def get_team_players(year: int, teamID: str):
     with Session(engine) as session:
-        statement = select(People.nameFirst, People.nameLast).join(Batting, Batting.playerID == People.playerID)
+        statement = select(People.playerID, People.nameFirst, People.nameLast).join(Batting, Batting.playerID == People.playerID)
         statement = statement.where(Batting.yearID == year, Batting.teamID == teamID).distinct().order_by(People.nameLast, People.nameFirst)
         rows = session.exec(statement).all()
-    players = [{"first": row[0] or "", "last": row[1] or ""} for row in rows]
+    players = [{"playerID": row[0], "first": row[1] or "", "last": row[2] or ""} for row in rows]
     return players
 
 @app.get("/team-players-by-name")
@@ -113,14 +113,70 @@ async def get_player_stats(playerID: str, year: int, teamID: str):
                 "CS": 0
             }
         # Get other teams in this year
-        other_team_ids = session.exec(select(Batting.teamID).where(Batting.playerID == playerID, Batting.yearID == year, Batting.teamID != teamID).distinct()).all()
-        other_team_ids = [row[0] for row in other_team_ids]
+        other_team_ids = session.exec(
+            select(Batting.teamID).where(
+                Batting.playerID == playerID,
+                Batting.yearID == year,
+                Batting.teamID != teamID
+            ).distinct()
+        ).all()
         if other_team_ids:
             other_team_statement = select(Teams.name).where(Teams.teamID.in_(other_team_ids), Teams.yearID == year).distinct()
             other_teams = session.exec(other_team_statement).all()
-            other_team_names = [row[0] for row in other_teams]
+            other_team_names = list(other_teams)
         else:
             other_team_names = []
     return {"stats": stats, "other_teams": other_team_names}
+
+@app.get("/player-details")
+async def get_player_details(playerID: str):
+    with Session(engine) as session:
+        statement = select(
+            People.playerID,
+            People.nameFirst,
+            People.nameLast,
+            People.nameGiven,
+            People.birthYear,
+            People.birthMonth,
+            People.birthDay,
+            People.birthCity,
+            People.birthState,
+            People.birthCountry,
+            People.height,
+            People.weight,
+            People.bats,
+            People.throws,
+            People.debut,
+            People.finalGame,
+            People.bbrefID,
+            People.retroID,
+        ).where(People.playerID == playerID)
+        row = session.exec(statement).first()
+
+    if not row:
+        return {"error": "Player not found"}
+
+    return {
+        "playerID": row[0],
+        "first": row[1] or "",
+        "last": row[2] or "",
+        "given": row[3] or "",
+        "birth": {
+            "year": row[4],
+            "month": row[5],
+            "day": row[6],
+            "city": row[7] or "",
+            "state": row[8] or "",
+            "country": row[9] or "",
+        },
+        "height": row[10],
+        "weight": row[11],
+        "bats": row[12] or "",
+        "throws": row[13] or "",
+        "debut": row[14] or "",
+        "finalGame": row[15] or "",
+        "bbrefID": row[16] or "",
+        "retroID": row[17] or "",
+    }
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
